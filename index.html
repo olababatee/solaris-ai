@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solaris Pro</title>
+<style>
+:root{box-sizing:border-box;--bg:#fffaf0;--card:#fff;--ink:#1f2933;--mute:#6b7280;--line:#e8dfcc;--acc:#f59e0b;--acc2:#b45309}
+@media (prefers-color-scheme:dark){:root{--bg:#14110b;--card:#1f1a10;--ink:#f3ede0;--mute:#a39b88;--line:#383019;--acc:#fbbf24;--acc2:#fcd34d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+header,.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.top{justify-content:flex-start}
+h1{margin:0;font-size:22px;cursor:pointer;user-select:none}h1 span{color:var(--acc)}
+.sub{color:var(--mute);margin:2px 0 0;font-size:13px}
+.lang button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;cursor:pointer;font:inherit}
+.lang button.on{background:var(--acc);color:#1f1a10;border-color:var(--acc);font-weight:600}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+h2{font-size:16px;margin:0 0 12px}h3{font-size:14px;margin:14px 0 6px}
+.row{display:grid;grid-template-columns:2fr 1fr .8fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center}
+.row.head{color:var(--mute);font-size:12px}
+textarea,input,select{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;min-width:0}
+.x{background:none;border:0;color:var(--mute);font-size:18px;cursor:pointer}
+.btn{background:var(--acc);color:#1f1a10;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font:inherit;font-weight:600}
+.btn.ghost{background:none;border:1px dashed var(--line);color:var(--ink)}
+.set{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+label{display:block;font-size:12px;color:var(--mute);margin-bottom:3px}
+.res{display:grid;gap:10px}
+.kpi{flex-wrap:wrap;border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.res .kpi{margin:0}.kpi b{font-size:21px;color:var(--acc2)}.kpi small{display:block;color:var(--mute);font-size:12px}
+.kpi.lock{justify-content:center;color:var(--mute);text-align:center}
+.warn{background:rgba(245,158,11,.15);border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
+.tot{color:var(--mute);font-size:13px;margin-top:8px;word-break:break-all}
+.locked .grid,.locked #fab,.locked #chat{display:none!important}.mock{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:14px 0;box-shadow:0 6px 20px rgba(0,0,0,.12)}.mock .bar{background:var(--acc);height:26px;display:flex;align-items:center;gap:5px;padding:0 10px}.mock .bar i{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.3)}.mock .bar span{margin-inline-start:auto;font-size:11px;font-weight:700;color:#1f1a10}.mock .in{padding:10px;display:grid;gap:8px;background:var(--bg)}.mock .kpi{margin:0;padding:8px 10px;background:var(--card)}.mock .kpi b{font-size:17px}.mock .cap{font-size:12px;color:var(--mute);padding:0 10px 10px;background:var(--bg)}.gate{max-width:480px;margin:28px auto}.gate ul{margin:8px 0 14px;padding-inline-start:20px;color:var(--mute);font-size:14px}.foot{text-align:center;font-size:13px;color:var(--mute);padding:22px 0 80px}a{color:var(--acc2)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.open{display:flex}.modal .card{max-width:540px;width:100%;max-height:88vh;overflow:auto}
+#fab{position:fixed;inset-inline-end:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:54px;height:54px;border-radius:50%;border:0;background:var(--acc);font-size:24px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#chat{position:fixed;inset-inline-end:16px;bottom:calc(80px + env(safe-area-inset-bottom));width:min(360px,calc(100vw - 32px));height:400px;max-height:60vh;background:var(--card);border:1px solid var(--line);border-radius:14px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.3)}
+#chat.open{display:flex}#chat header{padding:10px 14px;background:var(--acc);color:#1f1a10;font-weight:700}
+#msgs{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:85%;padding:8px 11px;border-radius:12px;font-size:14px;white-space:pre-wrap}
+.m.bot{background:var(--bg);border:1px solid var(--line);align-self:flex-start}.m.me{background:var(--acc);color:#1f1a10;align-self:flex-end}
+#cf{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><h1 id="logo">☀️ Solaris <span>Pro</span></h1><p class="sub" data-k="sub"></p></div>
+    <div class="top"><button class="btn" id="up"></button><button class="btn ghost" id="crs" data-k="course" hidden></button><button class="btn ghost" id="adm" hidden>⚙ Admin</button><div class="lang" id="lang"><button data-l="en">EN</button><button data-l="fr">FR</button><button data-l="ar">AR</button></div></div>
+  </header>
+  <section class="card" id="gate" hidden></section>
+  <div class="grid">
+    <section class="card">
+      <h2 data-k="enterLoad"></h2>
+      <div class="row head"><span data-k="name"></span><span data-k="watts"></span><span data-k="qty"></span><span data-k="hours"></span><span></span></div>
+      <div id="rows"></div>
+      <button class="btn ghost" id="add" data-k="add"></button>
+      <div class="tot" id="tot"></div>
+      <div class="set">
+        <div><label data-k="psh"></label><input id="psh" type="number" step="0.1" min="1" max="10" value="5"></div>
+        <div><label data-k="voltage"></label><select id="volt"><option>12</option><option>24</option><option selected>48</option></select></div>
+        <div><label data-k="buffer"></label><input id="buf" type="number" step="0.05" min="1" max="2" value="1.25"></div>
+        <div><label data-k="dod"></label><input id="dod" type="number" step="5" min="20" max="95" value="50"></div>
+        <div><label data-k="autonomy"></label><input id="aut" type="number" step="0.5" min="0.5" max="7" value="1"></div>
+        <div><label data-k="panelW"></label><input id="pw" type="number" step="10" min="50" value="400"></div>
+      </div>
+    </section>
+    <section class="card"><h2 data-k="results"></h2><div class="res" id="res"></div><div id="warns"></div></section>
+  </div>
+  <footer class="foot" id="foot"></footer>
+</div>
+<div id="modal" class="modal"><div class="card" id="mbody"></div></div>
+<button id="fab" aria-label="Help">💬</button>
+<div id="chat"><header data-k="help"></header><div id="msgs"></div><div id="cf"><input id="ci" autocomplete="off"><button class="btn" id="cs" data-k="send"></button></div></div>
+
+<script>
+/* ===== Config: defaults. Put a config.json next to this file to override (made by the Admin panel). ===== */
+const DEF={pk:"pk_live_baada2d8d730c4d5205f128b3e6630469693d87a",cur:"NGN",eff:.9,loss:.75,adminHash:"",faq:"",aiNotes:"",terms:"",privacy:"",
+ price:15000,coursePrice:15000};
+let CFG=JSON.parse(JSON.stringify(DEF)),ADMIN=false,lang="en";
+const $=id=>document.getElementById(id),esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clamp=(v,a,b,d)=>Number.isFinite(+v)&&v!==""?Math.min(b,Math.max(a,+v)):d,https=u=>/^https:\/\//.test(u)?u:"";
+
+/* ===== i18n ===== */
+const I={
+en:{sub:"Global hybrid & off-grid sizing calculator",enterLoad:"Enter Load",totalWatt:"Total Wattage",inverter:"Inverter Size",battery:"Battery Capacity",panels:"Solar Panels",psh:"Peak Sun Hours",name:"Appliance",watts:"Watts",qty:"Qty",hours:"Hours/day",add:"+ Add appliance",voltage:"System Voltage (V)",buffer:"Inverter buffer (×)",dod:"Battery DoD (%)",autonomy:"Days of autonomy",panelW:"Panel size (W)",results:"Results",daily:"Daily energy",array:"Array size",ctrl:"MPPT controller",wTip12:"High inverter power on 12V means very large currents. Use 24V or 48V.",upgrade:"Upgrade",days:"days",email:"Your email",buy:"Pay with Paystack",gateTitle:"Unlock Solaris Pro",gateSub:"Pay once and use the calculator for life.",sample:"EXAMPLE",freeVids:"Free videos by other creators (opens YouTube)",course:"🎓 Course",courseTitle:"Build Solar Batteries & Inverters",courseSub:"Step-by-step lessons with video guides and a personal Solaris AI tutor.",courseOnce:"One-time payment. Lifetime access.",courseSafety:"Safety first: batteries and mains power can cause fire, burns and death. Work only with proper protection, and have a qualified person check your work before switching on.",askAI:"Teach me with Solaris AI",soon:"Video coming soon",loadingC:"Loading course…",courseErr:"Could not load the course. Please try again.",sampleCap:"Example: fridge, TV, lights, laptop and fan · 5 peak sun hours · 48 V",f1:"Total wattage and inverter size",f2:"Battery bank and solar panel sizing",f3:"English, French and Arabic",lifetime:"Lifetime access",once:"One-time payment. No subscription.",secure:"🔒 Secure payment by Paystack",locked:"Unlock battery, panels, controller & help chat with a one-time payment",until:"Until",needEmail:"Enter a valid email first.",noPay:"Payments are not set up yet.",payErr:"Could not load the payment window. Check your connection.",thanks:"Payment received. Your access is active.",keyTitle:"Your licence key",keyHelp:"Save this key. Paste it under “Restore” to unlock on another device or after clearing your browser.",restore:"Restore access",restoreBtn:"Restore",keyPh:"Paste licence key",badKey:"Invalid or expired key.",help:"Solaris AI",aiPh:"Ask Solaris AI…",aiNeedPay:"Solaris AI works with a verified online payment on this device. Restore your licence key or contact the owner.",aiBusy:"Solaris AI is busy. Please try again with a shorter question.",send:"Send",hello:"Hi! I'm Solaris AI. Ask me anything about solar, inverters, batteries, wiring faults or how to use this calculator.",noAns:"I don't have an answer for that yet.",terms:"Terms",privacy:"Privacy",ex:"Appliance"},
+fr:{sub:"Calculateur de dimensionnement hybride et autonome",enterLoad:"Saisir la charge",totalWatt:"Puissance totale",inverter:"Dimension de l'onduleur",battery:"Capacité de la batterie",panels:"Panneaux solaires",psh:"Heures d'ensoleillement de pic",name:"Appareil",watts:"Watts",qty:"Qté",hours:"Heures/jour",add:"+ Ajouter un appareil",voltage:"Tension système (V)",buffer:"Marge onduleur (×)",dod:"Décharge max. DoD (%)",autonomy:"Jours d'autonomie",panelW:"Puissance panneau (W)",results:"Résultats",daily:"Énergie quotidienne",array:"Champ solaire",ctrl:"Régulateur MPPT",wTip12:"Une forte puissance en 12 V implique des courants très élevés. Utilisez 24 V ou 48 V.",upgrade:"Passer Premium",days:"jours",email:"Votre e-mail",buy:"Payer avec Paystack",gateTitle:"Débloquez Solaris Pro",gateSub:"Payez une fois et utilisez le calculateur à vie.",sample:"EXEMPLE",freeVids:"Vidéos gratuites d'autres créateurs (ouvre YouTube)",course:"🎓 Cours",courseTitle:"Fabriquer batteries solaires et onduleurs",courseSub:"Leçons pas à pas avec vidéos et un tuteur Solaris AI personnel.",courseOnce:"Paiement unique. Accès à vie.",courseSafety:"La sécurité d'abord : les batteries et le courant secteur peuvent provoquer incendie, brûlures et décès. Travaillez avec une protection adaptée et faites vérifier votre travail par un professionnel avant la mise sous tension.",askAI:"M'enseigner avec Solaris AI",soon:"Vidéo bientôt disponible",loadingC:"Chargement du cours…",courseErr:"Impossible de charger le cours. Réessayez.",sampleCap:"Exemple : frigo, TV, lampes, ordinateur et ventilateur · 5 h de soleil de pointe · 48 V",f1:"Puissance totale et onduleur",f2:"Dimensionnement batteries et panneaux",f3:"Anglais, français et arabe",lifetime:"Accès à vie",once:"Paiement unique. Sans abonnement.",secure:"🔒 Paiement sécurisé par Paystack",locked:"Débloquez batterie, panneaux, régulateur et aide avec un paiement unique",until:"Jusqu'au",needEmail:"Saisissez d'abord un e-mail valide.",noPay:"Les paiements ne sont pas encore configurés.",payErr:"Impossible de charger la fenêtre de paiement.",thanks:"Paiement reçu. Votre accès est actif.",keyTitle:"Votre clé de licence",keyHelp:"Conservez cette clé. Collez-la dans « Restaurer » pour débloquer sur un autre appareil.",restore:"Restaurer l'accès",restoreBtn:"Restaurer",keyPh:"Collez la clé",badKey:"Clé invalide ou expirée.",help:"Solaris AI",aiPh:"Demander à Solaris AI…",aiNeedPay:"Solaris AI nécessite un paiement en ligne vérifié sur cet appareil. Restaurez votre clé de licence ou contactez le propriétaire.",aiBusy:"Solaris AI est occupé. Réessayez avec une question plus courte.",send:"Envoyer",hello:"Bonjour ! Je suis Solaris AI. Posez-moi vos questions sur le solaire, les onduleurs, les batteries, les erreurs de câblage ou l'utilisation du calculateur.",noAns:"Je n'ai pas encore de réponse à cela.",terms:"Conditions",privacy:"Confidentialité",ex:"Appareil"},
+ar:{sub:"حاسبة تحجيم الأنظمة الهجينة والمستقلة عن الشبكة",enterLoad:"أدخل الحمل الكهربائي",totalWatt:"إجمالي القدرة (بالواط)",inverter:"حجم العاكس (Inverter)",battery:"سعة البطارية",panels:"الألواح الشمسية",psh:"ساعات ذروة السطوع الشمسي",name:"الجهاز",watts:"واط",qty:"العدد",hours:"ساعات/يوم",add:"+ إضافة جهاز",voltage:"جهد النظام (فولت)",buffer:"هامش العاكس (×)",dod:"عمق التفريغ (%)",autonomy:"أيام الاستقلالية",panelW:"قدرة اللوح (واط)",results:"النتائج",daily:"الطاقة اليومية",array:"حجم المصفوفة",ctrl:"منظم MPPT",wTip12:"القدرة العالية عند 12 فولت تعني تيارات كبيرة جداً. استخدم 24 أو 48 فولت.",upgrade:"ترقية",days:"يوم",email:"بريدك الإلكتروني",buy:"ادفع عبر Paystack",gateTitle:"افتح Solaris Pro",gateSub:"ادفع مرة واحدة واستخدم الحاسبة مدى الحياة.",sample:"مثال",freeVids:"فيديوهات مجانية من صنّاع آخرين (يفتح يوتيوب)",course:"🎓 الدورة",courseTitle:"صناعة البطاريات الشمسية والعاكسات",courseSub:"دروس خطوة بخطوة مع فيديو ومدرّس Solaris AI شخصي.",courseOnce:"دفعة واحدة. وصول مدى الحياة.",courseSafety:"السلامة أولاً: البطاريات وتيار الكهرباء قد تسبب حريقاً وحروقاً ووفاة. اعمل بحماية مناسبة واطلب من مختص فحص عملك قبل التشغيل.",askAI:"علّمني مع Solaris AI",soon:"الفيديو قريباً",loadingC:"جارٍ تحميل الدورة…",courseErr:"تعذر تحميل الدورة. حاول مرة أخرى.",sampleCap:"مثال: ثلاجة وتلفاز وإضاءة وحاسوب ومروحة · 5 ساعات ذروة شمسية · 48 فولت",f1:"إجمالي القدرة وحجم العاكس",f2:"تحجيم البطاريات والألواح",f3:"الإنجليزية والفرنسية والعربية",lifetime:"وصول مدى الحياة",once:"دفعة واحدة. بدون اشتراك.",secure:"🔒 دفع آمن عبر Paystack",locked:"افتح البطارية والألواح والمنظم والمساعدة بدفعة واحدة",until:"حتى",needEmail:"أدخل بريداً صالحاً أولاً.",noPay:"الدفع غير مفعّل بعد.",payErr:"تعذر تحميل نافذة الدفع.",thanks:"تم استلام الدفع. اشتراكك مفعّل.",keyTitle:"مفتاح الترخيص",keyHelp:"احتفظ بهذا المفتاح. الصقه في «استعادة» لفتح الاشتراك على جهاز آخر.",restore:"استعادة الاشتراك",restoreBtn:"استعادة",keyPh:"الصق المفتاح",badKey:"مفتاح غير صالح أو منتهٍ.",help:"Solaris AI",aiPh:"اسأل Solaris AI…",aiNeedPay:"يعمل Solaris AI مع دفعة إلكترونية موثقة على هذا الجهاز. استعد مفتاح الترخيص أو تواصل مع المالك.",aiBusy:"Solaris AI مشغول. حاول مرة أخرى بسؤال أقصر.",send:"إرسال",hello:"مرحباً! أنا Solaris AI. اسألني عن الطاقة الشمسية والعاكسات والبطاريات وأخطاء التوصيل أو طريقة استخدام الحاسبة.",noAns:"ليس لدي إجابة على هذا بعد.",terms:"الشروط",privacy:"الخصوصية",ex:"جهاز"}};
+const t=k=>I[lang][k]??I.en[k]??k;
+
+/* ===== licence (stored in this browser; see notes: not tamper-proof) ===== */
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+function dec(k){try{const o=JSON.parse(decodeURIComponent(escape(atob(k.trim()))));return o&&typeof o.e==="string"&&typeof o.x==="number"&&o.x>Date.now()?o:null}catch(e){return null}}
+const lic=()=>{try{return dec(localStorage.getItem("sp_lic")||"")}catch(e){return null}};
+const premium=()=>ADMIN||!!lic();
+const courseLic=()=>{try{return dec(localStorage.getItem("sp_course")||"")}catch(e){return null}};
+const store=o=>{try{localStorage.setItem(o.p==="course"?"sp_course":"sp_lic",enc(o))}catch(e){}};
+
+/* ===== engine ===== */
+const INV=[300,500,800,1000,1500,2000,3000,4000,5000,6000,8000,10000,12000,15000];
+let rows=[["Fridge",150,1,8],["LED",10,6,5],["TV",100,1,4],["Laptop",60,1,5],["Fan",60,2,6]].map(a=>({name:a[0],watts:a[1],qty:a[2],hours:a[3]}));
+function size(){
+  let wh=0,w=0;for(const r of rows){const a=clamp(r.watts,0,5e4,0),q=clamp(r.qty,0,1e3,0),h=clamp(r.hours,0,24,0);wh+=a*q*h;w+=a*q}
+  const psh=clamp($("psh").value,1,10,0),V=+$("volt").value;if(!wh||!psh)return null;
+  const buf=clamp($("buf").value,1,2,1.25),dod=clamp($("dod").value,20,95,50)/100,days=clamp($("aut").value,.5,7,1),pw=clamp($("pw").value,50,1e3,400);
+  const inv=INV.find(s=>s>=w*buf)||Math.ceil(w*buf/1e3)*1e3,bWh=wh*days/(dod*CFG.eff),panels=Math.ceil((wh/CFG.eff)/(psh*CFG.loss)/pw);
+  return{wh,w,inv,buf,V,bAh:Math.ceil(bWh/V),bWh,panels,pw,wp:panels*pw,ctrl:Math.ceil(panels*pw/V*1.25)};
+}
+function money(p){try{return new Intl.NumberFormat(lang,{style:"currency",currency:CFG.cur,maximumFractionDigits:0}).format(p)}catch(e){return p+" "+CFG.cur}}
+function render(){
+  const r=size(),f=n=>Math.round(n).toLocaleString(lang),k=(a,b,c)=>`<div class="kpi"><div>${a}<small>${c||""}</small></div><b>${b}</b></div>`;
+  $("tot").textContent=r?`${t("daily")}: ${f(r.wh)} Wh`:"";
+  if(!r){$("res").innerHTML="";$("warns").innerHTML="";return}
+  $("res").innerHTML=k(t("totalWatt"),f(r.w)+" W",t("daily")+": "+f(r.wh)+" Wh")+k(t("inverter"),f(r.inv)+" W","×"+r.buf)+
+   (premium()?k(t("battery"),f(r.bAh)+" Ah",`${r.V} V · ${(r.bWh/1000).toFixed(1)} kWh`)+k(t("panels"),r.panels+" × "+r.pw+" W",`${t("array")}: ${f(r.wp)} Wp`)+k(t("ctrl"),r.ctrl+" A",""):`<div class="kpi lock">🔒 ${t("locked")}</div>`);
+  $("warns").innerHTML=r.V===12&&r.inv>1500?`<div class="warn">⚠️ ${t("wTip12")}</div>`:"";
+}
+function drawRows(){$("rows").innerHTML=rows.map((r,i)=>`<div class="row"><input data-n="${i}" data-f="name" value="${esc(r.name)}"><input data-n="${i}" data-f="watts" type="number" min="0" value="${r.watts}"><input data-n="${i}" data-f="qty" type="number" min="0" value="${r.qty}"><input data-n="${i}" data-f="hours" type="number" min="0" max="24" step="0.5" value="${r.hours}"><button class="x" data-del="${i}">×</button></div>`).join("")}
+$("rows").oninput=e=>{const n=e.target.dataset.n;if(n!=null){rows[n][e.target.dataset.f]=e.target.value;render()}};
+$("rows").onclick=e=>{const d=e.target.dataset.del;if(d!=null){rows.splice(d,1);drawRows();render()}};
+$("add").onclick=()=>{rows.push({name:t("ex"),watts:100,qty:1,hours:2});drawRows();render()};
+["psh","volt","buf","dod","aut","pw"].forEach(id=>$(id).addEventListener("input",render));
+
+/* ===== UI shell ===== */
+const closeM=()=>$("modal").classList.remove("open");
+function modal(h){$("mbody").innerHTML=h;$("modal").classList.add("open")}
+$("modal").onclick=e=>{if(e.target.id==="modal")closeM()};
+function setLang(l){lang=l;const d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";
+  document.querySelectorAll("[data-k]").forEach(e=>e.textContent=t(e.dataset.k));
+  document.querySelectorAll("#lang button").forEach(b=>b.classList.toggle("on",b.dataset.l===l));refresh()}
+$("lang").onclick=e=>{if(e.target.dataset.l)setLang(e.target.dataset.l)};
+const ownerDev=()=>{try{return localStorage.getItem("sp_owner")==="1"}catch(e){return false}};
+function refresh(){const L=lic();$("adm").hidden=!(ADMIN||ownerDev());$("crs").hidden=!premium();const locked=!premium();document.body.classList.toggle("locked",locked);$("gate").hidden=!locked;if(locked)drawGate();$("up").hidden=!(L&&!ADMIN);$("up").textContent="✓ "+t("lifetime");
+  $("ci").placeholder=t("aiPh");$("foot").innerHTML=[CFG.terms&&`<a href="${esc(https(CFG.terms))}" target="_blank" rel="noopener">${t("terms")}</a>`,CFG.privacy&&`<a href="${esc(https(CFG.privacy))}" target="_blank" rel="noopener">${t("privacy")}</a>`].filter(Boolean).join(" · ");render()}
+
+/* ===== payments: Paystack Inline popup (public key only) ===== */
+function loadPS(ok,bad){if(window.PaystackPop)return ok();const s=document.createElement("script");s.src="https://js.paystack.co/v1/inline.js";s.onload=ok;s.onerror=bad;document.head.appendChild(s)}
+function mockup(){
+  const f=n=>Math.round(n).toLocaleString(lang),wh=1900,w=310,V=48,inv=INV.find(x=>x>=w*1.25),bWh=wh/(.5*CFG.eff),pn=Math.ceil((wh/CFG.eff)/(5*CFG.loss)/400),k=(a,b,c)=>`<div class="kpi"><div>${a}<small>${c||""}</small></div><b>${b}</b></div>`;
+  return`<div class="mock" aria-hidden="true"><div class="bar"><i></i><i></i><i></i><span>${t("sample")}</span></div><div class="in">`+
+   k(t("totalWatt"),f(w)+" W",t("daily")+": "+f(wh)+" Wh")+k(t("inverter"),f(inv)+" W","×1.25")+k(t("battery"),f(bWh/V)+" Ah",V+" V · "+(bWh/1000).toFixed(1)+" kWh")+k(t("panels"),pn+" × 400 W",t("array")+": "+f(pn*400)+" Wp")+k(t("ctrl"),Math.ceil(pn*400/V*1.25)+" A","")+
+   `</div><div class="cap">${t("sampleCap")}</div></div>`}
+function drawGate(){
+  const L=lic(),old=$("pe")?$("pe").value:"";
+  $("gate").innerHTML=`<div class="gate"><h2>☀️ ${t("gateTitle")}</h2><p class="sub">${t("gateSub")}</p>${mockup()}<ul><li>${t("f1")}</li><li>${t("f2")}</li><li>${t("f3")}</li></ul>
+   <label>${t("email")}</label><input id="pe" type="email" autocomplete="email" value="${esc(old||(L?L.e:""))}"><div style="height:10px"></div>
+   <div class="kpi"><div>${t("lifetime")}<small>${t("once")}</small></div><b>${money(CFG.price)}</b><button class="btn" id="buy">${t("buy")}</button></div>
+   <div class="tot">${t("secure")}</div><div id="pm" class="tot"></div><h3>${t("restore")}</h3><div style="display:flex;gap:6px"><input id="rk" placeholder="${t("keyPh")}"><button class="btn ghost" id="rb">${t("restoreBtn")}</button></div></div>`;
+  $("buy").onclick=buy;
+  $("rb").onclick=()=>{const o=dec($("rk").value);if(!o||o.p==="course")return $("pm").textContent=t("badKey");store(o);refresh()};
+}
+const showPlans=()=>{if(!premium())drawGate()};
+function startPay(kind,em,m){
+  if(!/^\S+@\S+\.\S+$/.test(em))return m(t("needEmail"));if(!CFG.pk)return m(t("noPay"));
+  const price=kind==="course"?CFG.coursePrice:CFG.price;
+  loadPS(()=>{PaystackPop.setup({key:CFG.pk,email:em,amount:Math.round(price*100),currency:CFG.cur,ref:(kind==="course"?"SC":"SP")+Date.now().toString(36)+Math.random().toString(36).slice(2,8),metadata:{plan:kind},
+    callback:function(r){const o={e:em,p:kind,r:r.reference,x:Date.now()+36500*864e5};store(o);refresh();
+      modal(`<h2>✓ ${t("thanks")}</h2><h3>${t("keyTitle")}</h3><div class="tot" style="user-select:all">${esc(enc(o))}</div><div class="tot">${t("keyHelp")}</div>`+(kind==="course"?`<p><button class="btn" id="oc">${t("courseTitle")}</button></p>`:""));
+      if(kind==="course")$("oc").onclick=showCourse},onClose:function(){}}).openIframe()},()=>m(t("payErr")));
+}
+const buy=()=>startPay("lifetime",$("pe").value.trim(),x=>$("pm").textContent=x);
+
+/* ===== course: lessons come from the server (only paying students receive the video links) ===== */
+function linksHtml(l){const a=(l.links||[]).filter(k=>/^https:\/\/\S+$/.test(k.url||""));
+  return a.length?`<div class="tot"><b>${t("freeVids")}</b></div>`+a.map(k=>`<div class="tot">▶ <a href="${esc(k.url)}" target="_blank" rel="noopener noreferrer">${esc(k.title)}</a> · ${esc(k.by||"")}</div>`).join(""):""}
+function vid(u){u=String(u||"");const m=u.match(/^https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  if(m)return`<iframe src="https://www.youtube-nocookie.com/embed/${m[1]}" title="Lesson video" loading="lazy" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;border-radius:10px"></iframe>`;
+  if(/^https:\/\/[^\s"'<>]+\.mp4(\?[^\s"'<>]*)?$/i.test(u))return`<video controls preload="none" src="${esc(u)}" style="width:100%;border-radius:10px"></video>`;
+  return`<div class="tot">${t("soon")}</div>`}
+async function showCourse(){
+  const L=courseLic();if(L)return loadCourse(L);
+  modal(`<h2>🎓 ${t("courseTitle")}</h2><p class="sub">${t("courseSub")}</p><div id="cpv" class="tot"></div><div class="tot">⚠️ ${t("courseSafety")}</div>
+   <label style="margin-top:10px">${t("email")}</label><input id="ce" type="email" autocomplete="email" value="${esc((lic()||{}).e||"")}"><div style="height:10px"></div>
+   <div class="kpi"><div>${t("courseTitle")}<small>${t("courseOnce")}</small></div><b>${money(CFG.coursePrice)}</b><button class="btn" id="cbuy">${t("buy")}</button></div>
+   <div class="tot">${t("secure")}</div><div id="cm" class="tot"></div><h3>${t("restore")}</h3><div style="display:flex;gap:6px"><input id="ck" placeholder="${t("keyPh")}"><button class="btn ghost" id="crb">${t("restoreBtn")}</button></div>`);
+  $("cbuy").onclick=()=>startPay("course",$("ce").value.trim(),x=>$("cm").textContent=x);
+  $("crb").onclick=()=>{const o=dec($("ck").value);if(!o||o.p!=="course")return $("cm").textContent=t("badKey");store(o);showCourse()};
+  try{const r=await fetch("/.netlify/functions/course"),j=await r.json();if(j&&j.modules)$("cpv").innerHTML=j.modules.map(m=>`<b>${esc(m.title)}</b><br>`+m.lessons.map(l=>"• "+esc(l.title)).join("<br>")).join("<br><br>")}catch(e){}
+}
+async function loadCourse(L){
+  modal(`<h2>🎓 ${t("courseTitle")}</h2><div class="tot">${t("loadingC")}</div>`);
+  try{
+    const r=await fetch("/.netlify/functions/course",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ref:L.r})}),j=await r.json().catch(()=>null);
+    if(!r.ok||!j||!j.modules)throw new Error("load");
+    const CL=[];
+    modal(`<h2>🎓 ${t("courseTitle")}</h2><div class="tot">⚠️ ${t("courseSafety")}</div>`+j.modules.map(m=>`<h3>${esc(m.title)}</h3>`+m.lessons.map(l=>{CL.push(l);
+      return`<div class="kpi" style="display:block"><b style="font-size:15px;color:var(--ink)">${esc(l.id)} · ${esc(l.title)}</b><div class="tot">${esc(l.summary||"")}</div><div style="margin:8px 0">${l.video||!(l.links&&l.links.length)?vid(l.video):""}</div>${linksHtml(l)}<button class="btn ghost" data-ask="${CL.length-1}">${t("askAI")}</button></div>`}).join("")).join(""));
+    document.querySelectorAll("[data-ask]").forEach(b=>b.onclick=()=>{const l=CL[+b.dataset.ask];closeM();$("chat").classList.add("open");if(!$("msgs").children.length)say(t("hello"),"bot");$("ci").value="Teach me lesson "+l.id+" ("+l.title+") step by step.";send()});
+  }catch(e){modal(`<h2>🎓 ${t("courseTitle")}</h2><div class="tot">${t("courseErr")}</div>`)}
+}
+
+/* ===== help chat: answers from the FAQ you write in Admin (no AI, no server) ===== */
+const say=(x,w)=>{const d=document.createElement("div");d.className="m "+w;d.textContent=x;$("msgs").appendChild(d);$("msgs").scrollTop=1e9;return d};
+function answer(q){q=q.toLowerCase();for(const ln of CFG.faq.split("\n")){const i=ln.indexOf("|");if(i>0&&ln.slice(0,i).split(",").some(w=>w.trim()&&q.includes(w.trim().toLowerCase())))return ln.slice(i+1).trim()}return t("noAns")}
+const hist=[];
+function ctxText(){const r=size();let x="Appliances: "+rows.slice(0,20).map(a=>`${String(a.name).slice(0,30)} ${+a.watts||0}W x${+a.qty||0} ${+a.hours||0}h/day`).join("; ");
+  x+=`\nSettings: sun hours ${$("psh").value}, ${$("volt").value}V, inverter buffer ${$("buf").value}, DoD ${$("dod").value}%, autonomy ${$("aut").value} days, panel ${$("pw").value}W`;
+  if(r)x+=`\nResults: ${Math.round(r.wh)} Wh/day, ${Math.round(r.w)} W load, inverter ${r.inv} W, battery ${r.bAh} Ah, ${r.panels} panels (${r.wp} Wp), controller ${r.ctrl} A`;return x}
+async function send(){
+  const v=$("ci").value.trim();if(!v)return;$("ci").value="";say(v,"me");const w=say("…","bot"),L=lic();
+  if(!L||!/^SP[a-z0-9]{6,40}$/i.test(L.r||"")){w.textContent=t("aiNeedPay");return}
+  hist.push({role:"user",content:v});
+  try{
+    const r=await fetch("/.netlify/functions/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ref:L.r,course:(courseLic()||{}).r,messages:hist.slice(-10),ctx:ctxText()})}),j=await r.json().catch(()=>null);
+    if(r.ok&&j&&j.reply){hist.push({role:"assistant",content:j.reply});w.textContent=j.reply}
+    else if(r.status===402)w.textContent=t("aiNeedPay");
+    else if(r.status===429||r.status===504)w.textContent=t("aiBusy");
+    else w.textContent=answer(v); // AI not set up yet or temporarily down: use your offline answers
+  }catch(e){w.textContent=answer(v)}
+  if(hist.length>20)hist.splice(0,hist.length-20);$("msgs").scrollTop=1e9;
+}
+$("fab").onclick=()=>{$("chat").classList.toggle("open");if(!$("msgs").children.length)say(t("hello"),"bot")};
+$("cs").onclick=send;$("ci").onkeydown=e=>{if(e.key==="Enter")send()};
+$("crs").onclick=showCourse;
+$("up").onclick=()=>{const L=lic();if(L)modal(`<h2>${t("keyTitle")}</h2><div class="tot" style="user-select:all">${esc(enc(L))}</div><div class="tot">${t("keyHelp")}</div>`)};$("adm").onclick=()=>ADMIN?showAdmin():adminLogin();
+
+/* ===== admin: tap the logo 5 times (or open #admin). Edits are exported as config.json for YOUR host. ===== */
+async function sha(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("solaris:"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return"p:"+s}}
+let taps=0,tt;$("logo").onclick=()=>{clearTimeout(tt);if(++taps>=5){taps=0;adminLogin()}tt=setTimeout(()=>taps=0,2500)};
+function adminLogin(){
+  const first=!CFG.adminHash;
+  modal(`<h2>Admin</h2><label>${first?"Create an admin password (8+ characters)":"Admin password"}</label><input id="ap" type="password"><p><button class="btn" id="ag">${first?"Create & open":"Open"}</button> <span id="am" class="tot"></span></p>`);
+  $("ag").onclick=async()=>{const v=$("ap").value;if(v.length<8&&first)return $("am").textContent="8+ characters";
+    if(first)CFG.adminHash=await sha(v);else if(await sha(v)!==CFG.adminHash)return $("am").textContent="Wrong password";
+    ADMIN=true;try{localStorage.setItem("sp_owner","1")}catch(e){}refresh();showAdmin()};
+}
+function showAdmin(){
+  const i=(id,v,ty="text")=>`<input id="${id}" type="${ty}" value="${esc(v)}">`;
+  modal(`<h2>⚙ Admin</h2><h3>Paystack</h3><label>Public key from Paystack Dashboard → Settings → API Keys &amp; Webhooks (pk_test_… / pk_live_…). Never paste your secret key here.</label>${i("apk",CFG.pk)}<div class="tot">Status: ${CFG.pk?"✓ key set - customers can pay with Paystack":"✗ no key yet - Upgrade will say payments are not set up"}</div>
+   <h3>One-time price (lifetime access)</h3>${i("aprice",CFG.price,"number")}<div class="tot">Suggested starting point: ₦10,000 to ₦20,000 for technicians and installers. Adjust to what your customers accept.</div><h3>Course price (one-time)</h3>${i("acp",CFG.coursePrice,"number")}<div class="tot">Add your lesson videos by editing course.js on GitHub (links stay private; only paying students receive them).</div><div class="set"><div><label>Currency (must be enabled on your Paystack)</label><select id="acur">${["NGN","GHS","ZAR","KES","USD"].map(c=>`<option${c===CFG.cur?" selected":""}>${c}</option>`).join("")}</select></div>
+   <div><label>Inverter efficiency (0.5-1)</label>${i("aef",CFG.eff,"number")}</div><div><label>System losses factor (0.4-1)</label>${i("als",CFG.loss,"number")}</div>
+   <div><label>Terms URL (https)</label>${i("atl",CFG.terms)}</div><div><label>Privacy URL (https)</label>${i("apr",CFG.privacy)}</div></div>
+   <h3>Solaris AI knowledge: paste new information, rules or corrections (used by the AI after you upload config.json)</h3><textarea id="aai" rows="5">${esc(CFG.aiNotes)}</textarea>
+   <h3>Offline fallback answers (used only if the AI is unavailable): keyword1, keyword2 | answer</h3><textarea id="afq" rows="5">${esc(CFG.faq)}</textarea>
+   <h3>New admin password (optional)</h3><input id="anp" type="password" placeholder="leave empty to keep">
+   <p><button class="btn" id="adl">Download config.json</button> <button class="btn ghost" id="aap">Apply here</button> <button class="btn ghost" id="acu">Test as customer</button></p><p><button class="btn ghost" id="alo">Log out</button> <button class="btn ghost" id="afg">Hide Admin button on this device</button></p>
+   <div class="tot">Upload the downloaded <b>config.json</b> next to this HTML file on your host. Customers get your changes after that; nothing changes for them before.</div>
+   <h3>Manual licence key (bank transfer / gift)</h3><div style="display:flex;gap:6px"><input id="ke" placeholder="customer email"><button class="btn ghost" id="kg">Make</button></div><div id="ko" class="tot" style="user-select:all"></div>`);
+  const read=async()=>{CFG.pk=$("apk").value.trim();CFG.cur=$("acur").value;CFG.eff=clamp($("aef").value,.5,1,.9);CFG.loss=clamp($("als").value,.4,1,.75);
+    CFG.price=clamp($("aprice").value,100,1e7,CFG.price);CFG.coursePrice=clamp($("acp").value,100,1e7,CFG.coursePrice);
+    CFG.terms=https($("atl").value.trim());CFG.privacy=https($("apr").value.trim());CFG.faq=$("afq").value.slice(0,4000);CFG.aiNotes=$("aai").value.slice(0,4000);if($("anp").value.length>=8)CFG.adminHash=await sha($("anp").value);refresh()};
+  $("aap").onclick=async()=>{await read();closeM()};
+  $("alo").onclick=()=>{ADMIN=false;refresh();closeM()};
+  $("afg").onclick=()=>{try{localStorage.removeItem("sp_owner")}catch(e){}ADMIN=false;refresh();closeM()};
+  $("acu").onclick=async()=>{await read();ADMIN=false;closeM();refresh()};
+  $("adl").onclick=async()=>{await read();const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(CFG,null,2)],{type:"application/json"}));a.download="config.json";a.click()};
+  $("kg").onclick=()=>{const e=$("ke").value.trim();if(e)$("ko").textContent=enc({e,p:"lifetime",r:"manual",x:Date.now()+36500*864e5})};
+}
+
+/* ===== start ===== */
+drawRows();
+fetch("config.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null).then(c=>{if(c&&typeof c==="object"){CFG={...DEF,...c};delete CFG.plans;CFG.price=clamp(CFG.price,100,1e7,DEF.price);CFG.coursePrice=clamp(CFG.coursePrice,100,1e7,DEF.coursePrice)}
+  setLang("en");if(location.hash==="#admin")adminLogin()});
+</script>
+</body>
+</html>
